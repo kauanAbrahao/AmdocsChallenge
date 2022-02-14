@@ -12,7 +12,6 @@ public class SlaCalculator {
         LocalDateTime slaResponse = iOpeningDateTime;
         Month monthOpeningDate = iOpeningDateTime.getMonth();
 
-        slaResponse = calculateTimeForWeekends(slaResponse);
         slaResponse = calculateSlaBusinessHour(slaResponse, iSLA);
 
         if(monthOpeningDate != slaResponse.getMonth()){
@@ -27,20 +26,16 @@ public class SlaCalculator {
         for(int hourCont = 0; hourCont < iSLA; hourCont++){
             slaResponse = slaResponse.plusHours(1);
 
-            if(!isBusinessHour(slaResponse.getHour())){
+            if(!isBusinessHour(slaResponse.getHour()) || isWeeknd(slaResponse) ){
                 hourCont--;
             }
         }
         return slaResponse;
     }
 
-    private LocalDateTime calculateTimeForWeekends(LocalDateTime slaResponse) {
+    private boolean isWeeknd(LocalDateTime slaResponse) {
 
-        while (slaResponse.getDayOfWeek() == DayOfWeek.SATURDAY || slaResponse.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            slaResponse = slaResponse.plusHours(1);
-        }
-
-        return slaResponse;
+        return slaResponse.getDayOfWeek() == DayOfWeek.SATURDAY || slaResponse.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 
     private boolean isBusinessHour(int iOpeningHour) {

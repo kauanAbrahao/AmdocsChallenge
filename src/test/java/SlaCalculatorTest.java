@@ -65,4 +65,18 @@ public class SlaCalculatorTest {
         Assert.assertEquals(expectedDateTime, slaResponse);
     }
 
+    @Test
+    public void calculateSla_weekendCase(){
+        SlaCalculator slaCalculator = new SlaCalculator();
+
+        LocalDateTime inputDateTime = LocalDateTime.of(2022, 2, 11, 16, 0, 0, 0);
+        System.out.println(inputDateTime);
+        int iSla = 5;
+
+        LocalDateTime slaResponse = slaCalculator.calculateSLA(inputDateTime, iSla);
+
+        LocalDateTime expectedDateTime = LocalDateTime.of(2022, 2, 14, 12, 0, 0, 0);
+        Assert.assertEquals(expectedDateTime, slaResponse);
+    }
+
 }
